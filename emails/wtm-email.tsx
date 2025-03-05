@@ -42,7 +42,7 @@ export const WomensDayEmail = ({
               }}
             >
               <Img
-                src={`${baseUrl}/static/emaillogo.png`}
+                src={`https://raw.githubusercontent.com/alperbayram/test-react-email/refs/heads/main/emails/static/emaillogo.png`}
                 alt="GDG Antalya Logo"
                 style={{ width: "60px", height: "35px", marginRight: "10px" }}
               />
@@ -59,7 +59,7 @@ export const WomensDayEmail = ({
             <div style={illustration}>
               {/* This would be an actual image in production */}
               <Img
-                src={`${baseUrl}/static/email.png`}
+                src={`https://raw.githubusercontent.com/alperbayram/test-react-email/refs/heads/main/emails/static/email.png`}
                 alt="Woman writing 'impossible to im possible'"
                 width="1200"
                 height="675"
@@ -94,15 +94,25 @@ export const WomensDayEmail = ({
               getiriyoruz.
             </Text>
             <Text style={paragraph}>
-              Bu yılki etkinliğimizde hem kadın konuşmacılarımız yer alacak hem
-              de teknoloji sektöründe daha çok kadının yer almasını destekleyen
-              sponsor firmalara ihtiyacımız bulunmaktadır.
+              Bu yılki etkinliğimizde hem{" "}
+              <span style={{ fontWeight: "bold", color: "#4285F4" }}>
+                kadın konuşmacılarımız
+              </span>{" "}
+              yer alacak hem de teknoloji sektöründe daha çok kadının yer
+              almasını destekleyen{" "}
+              <span style={{ fontWeight: "bold", color: "#4285F4" }}>
+                sponsor firmalara
+              </span>{" "}
+              ihtiyacımız bulunmaktadır.
             </Text>
             <Text style={paragraph}>
-              {companyName} olarak, kadınların teknoloji alanındaki varlığını
-              destekleyen bu önemli etkinlikte yanımızda olmanızı ve mümkünse
-              kadın çalışanlarınızdan konuşmacı olarak katılım sağlayabilecek
-              kişileri önermenizi rica ediyoruz.
+              <span style={{ fontWeight: "bold" }}>{companyName}</span> olarak,
+              kadınların teknoloji alanındaki varlığını destekleyen bu önemli
+              etkinlikte yanımızda olmanızı ve mümkünse{" "}
+              <span style={{ fontWeight: "bold", textDecoration: "underline" }}>
+                kadın çalışanlarınızdan konuşmacı{" "}
+              </span>
+              olarak katılım sağlayabilecek kişileri önermenizi rica ediyoruz.
             </Text>
             <Text style={paragraph}>
               Geçmiş etkinliklerimizde Google, Getir, Akdeniz Üniversitesi,
@@ -123,18 +133,36 @@ export const WomensDayEmail = ({
             <Text style={paragraph}>
               Saygılarımla,
               <br />
-              Alper Bayram
-              <br />
-              WTM Antalya
+              Alper Bayram - GDG Antalya
             </Text>
 
-            <Button style={button} href="https://calendly.com/gdgantalya/30min">
-              Görüşme Planla
-            </Button>
-            <Text style={{ ...paragraph, fontSize: "14px", marginTop: "10px" }}>
-              Ayrıntılı sponsorluk dosyamızı incelemek için{" "}
-              <Link style={anchor} href={attachmentUrl}>
-                tıklayınız.
+            <div style={{ textAlign: "center", margin: "30px 0" }}>
+              <Button
+                style={button}
+                className="dark-mode-button"
+                href="https://calendly.com/gdgantalya/30min"
+              >
+                Görüşme Planla
+              </Button>
+            </div>
+            <Text
+              style={{
+                ...paragraph,
+                fontSize: "16px",
+                marginTop: "15px",
+                textAlign: "center" as const,
+              }}
+            >
+              <Link
+                style={{
+                  ...anchor,
+                  fontWeight: "bold",
+                  textDecoration: "underline",
+                  padding: "8px 0",
+                }}
+                href={attachmentUrl}
+              >
+                Ayrıntılı sponsorluk dosyamızı incelemek için tıklayınız.
               </Link>
             </Text>
           </Section>
@@ -286,15 +314,17 @@ const container = {
   margin: "0 auto",
   padding: "0 0 48px",
   marginBottom: "64px",
+  maxWidth: "700px", // Genişliği artırdık
+  width: "100%",
   border: "1px solid #e6ebf1",
   borderRadius: "5px",
   overflow: "hidden",
 };
 
 const box = {
-  padding: "0 48px",
+  padding: "0 32px", // İçerideki içeriğin yanlardan iç kenar boşluğunu azalttık
+  width: "100%",
 };
-
 const header = {
   backgroundColor: "#ffffff",
   padding: "20px 0 0",
@@ -372,13 +402,15 @@ const button = {
   backgroundColor: "#4285F4", // Google blue
   borderRadius: "5px",
   color: "#fff",
-  fontSize: "16px",
+  fontSize: "18px", // Font boyutunu büyüttük
   fontWeight: "bold",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "10px 20px",
-  margin: "20px 0",
+  padding: "14px 30px", // Padding'i artırdık
+  margin: "0 auto", // Otomatik kenar boşluğu ile yatay merkezleme
+  border: "none",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Hafif gölge ekledik
 };
 
 const socialSection = {
