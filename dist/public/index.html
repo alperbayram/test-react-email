@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GDG Antalya Email Gönderme</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+      .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #4285f4;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        display: block;
+      }
+      button:hover {
+        background-color: #3367d6;
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .logo img {
+        height: 60px;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        display: none;
+      }
+      .success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+      }
+      .error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="./emaillogo.png" alt="GDG Logo" />
+      </div>
+      <h1>GDG Antalya IWD'25</h1>
+
+      <div class="form-group">
+        <label for="recipientName">Alıcı Adı</label>
+        <input type="text" id="recipientName" value="İlgili Yetkili" />
+      </div>
+
+      <div class="form-group">
+        <label for="companyName">Şirket Adı</label>
+        <input type="text" id="companyName" value="Şirket Adı" />
+      </div>
+
+      <div class="form-group">
+        <label for="recipientEmail">Alıcı E-posta</label>
+        <input
+          type="email"
+          id="recipientEmail"
+          placeholder="ornek@sirket.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Konu</label>
+        <input
+          type="text"
+          id="subject"
+          value="GDG Antalya IWD'25 Etkinlik Daveti"
+        />
+      </div>
+
+      <button id="sendButton">E-posta Gönder</button>
+
+      <div id="statusMessage" class="status"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("sendButton")
+        .addEventListener("click", async function () {
+          // Form bilgilerini al
+          const recipientName = document.getElementById("recipientName").value;
+          const companyName = document.getElementById("companyName").value;
+          const recipientEmail =
+            document.getElementById("recipientEmail").value;
+          const subject = document.getElementById("subject").value;
+
+          // Alan kontrolü
+          if (!recipientName || !companyName || !recipientEmail || !subject) {
+            showStatus("Lütfen tüm alanları doldurun.", false);
+            return;
+          }
+
+          // E-posta formatı kontrolü
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(recipientEmail)) {
+            showStatus("Lütfen geçerli bir e-posta adresi girin.", false);
+            return;
+          }
+
+          // Yükleniyor durumu göster
+          showStatus("E-posta gönderiliyor, lütfen bekleyin...", null);
+          this.disabled = true;
+
+          try {
+            // Backend'e istek gönder
+            const response = await fetch("/send-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: recipientName,
+                companyName: companyName,
+                to: recipientEmail,
+                subject: subject,
+              }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              showStatus("E-posta başarıyla gönderildi!", true);
+              // Form alanlarını temizle - isteğe bağlı
+              document.getElementById("recipientEmail").value = "";
+            } else {
+              showStatus(
+                `Hata: ${result.error || "Bilinmeyen bir hata oluştu."}`,
+                false
+              );
+            }
+          } catch (error) {
+            showStatus(`Bağlantı hatası: ${error.message}`, false);
+          } finally {
+            this.disabled = false;
+          }
+        });
+
+      function showStatus(message, isSuccess) {
+        const statusEl = document.getElementById("statusMessage");
+        statusEl.textContent = message;
+        statusEl.style.display = "block";
+
+        // Stil temizle
+        statusEl.classList.remove("success", "error");
+
+        // isSuccess null ise yükleniyor durumu
+        if (isSuccess === true) {
+          statusEl.classList.add("success");
+        } else if (isSuccess === false) {
+          statusEl.classList.add("error");
+        }
+      }
+    </script>
+  </body>
+</html>

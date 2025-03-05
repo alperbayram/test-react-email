@@ -19,11 +19,7 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "";
 
-export const WomensDayEmail = ({
-  name = "İlgili Yetkili",
-  companyName = "Şirket Adı",
-  attachmentUrl = "https://drive.google.com/file/d/1_8PkSFFfhASj9pYbKYvIWbXlUQq8Rj7M/view?usp=sharing",
-}) => (
+export const WomensDayEmail = ({ name, companyName, attachmentUrl }: any) => (
   <Html>
     <Head />
     <Preview>
