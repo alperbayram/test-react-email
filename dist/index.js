@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import { WomensDayEmail } from "./emails/wtm-email.js"; // Email template'inizin yolu
+import { WomensDayEmail } from "./emails/wtm-email.js";
 import React from "react";
 // __dirname ayarlaması (ESM için)
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("*", express.static(path.join(__dirname, "index.html")));
 // Email gönderme fonksiyonu
-async function sendEmail(to, name, companyName, subject, attachmentUrl) {
+async function sendEmail(to, name, companyName, subject, attachmentUrl, cc // CC parametresi eklendi
+) {
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || "smtp.gmail.com",
         port: parseInt(process.env.SMTP_PORT || "587"),
@@ -40,29 +41,31 @@ async function sendEmail(to, name, companyName, subject, attachmentUrl) {
         attachmentUrl: "https://drive.google.com/file/d/1_8PkSFFfhASj9pYbKYvIWbXlUQq8Rj7M/view?usp=sharing",
     }));
     const options = {
-        from: process.env.EMAIL_FROM || "your-email@gmail.com",
+        from: process.env.EMAIL_FROM || "gdgantalya@gmail.com",
         to: to,
+        // CC için null kontrolü ekledik
+        ...(cc && cc.length > 0 ? { cc: cc } : {}),
         subject: subject || "GDG Antalya IWD'25 Etkinlik Daveti",
         html: emailHtml,
     };
     try {
         const info = await transporter.sendMail(options);
         console.log("E-posta başarıyla gönderildi:", info.messageId);
-        return info;
+        console.log("CC Emails:", cc || "Hiç CC yok"); // CC loglaması
+        return {
+            ...info,
+            ccCount: cc ? cc.length : 0,
+        };
     }
     catch (error) {
         console.error("E-posta gönderilirken hata oluştu:", error);
         throw error;
     }
 }
-// Ana endpoint - HTML sayfasını servis et
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-// Tekli e-posta gönderme endpoint'i
+// Endpoint kısmında da küçük bir düzenleme
 app.post("/send-email", async (req, res) => {
     try {
-        const { to, name, companyName, subject, attachmentUrl } = req.body;
+        const { to, name, companyName, subject, attachmentUrl, cc } = req.body;
         if (!to) {
             return res.status(400).json({
                 status: "error",
@@ -70,11 +73,22 @@ app.post("/send-email", async (req, res) => {
                 error: "Alıcı e-posta adresi gereklidir",
             });
         }
-        const info = await sendEmail(to, name || "İlgili Yetkili", companyName || "Şirket Adı", subject || "GDG Antalya IWD'25 Etkinlik Daveti", attachmentUrl);
+        // CC için doğrulama ve işleme
+        let ccEmails;
+        if (cc && Array.isArray(cc)) {
+            // E-posta formatını doğrula
+            ccEmails = cc.filter((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+        }
+        console.log("CC Emails before sending:", ccEmails); // Ek log
+        const info = await sendEmail(to, name || "İlgili Yetkili", companyName || "Şirket Adı", subject || "GDG Antalya IWD'25 Etkinlik Daveti", attachmentUrl, ccEmails // CC listesi eklendi
+        );
         res.status(200).json({
             status: "success",
             message: "E-posta başarıyla gönderildi",
-            data: { messageId: info.messageId },
+            data: {
+                messageId: info.messageId,
+                ccCount: info.ccCount || 0,
+            },
         });
     }
     catch (error) {

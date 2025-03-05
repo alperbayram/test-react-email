@@ -165,121 +165,18 @@ export const WomensDayEmail = ({ name, companyName, attachmentUrl }: any) => (
 
           <Hr style={hr} />
 
-          {/* Social Media Section */}
+          {/* Social Media Section - Footer Style */}
           <Section style={socialSection}>
             <Text style={socialText}>Bizi takip edin</Text>
-            <Section
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
+
+            {/* Instagram Link - Footer Style */}
+            <Link
+              style={footerSocialLink}
+              href="https://www.instagram.com/gdgantalya"
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <div style={{ paddingRight: 10 }}>
-                  <div
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "black",
-                      borderStyle: "solid",
-                      borderRadius: 50,
-                      width: 30,
-                      height: 30,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Link href="https://facebook.com/gdgantalya">
-                      <Img
-                        src="https://img.icons8.com/ios-glyphs/60/facebook-f.png"
-                        width="16"
-                        height="16"
-                        alt="Facebook"
-                      />
-                    </Link>
-                  </div>
-                </div>
-                <div style={{ paddingRight: 10 }}>
-                  <div
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "black",
-                      borderStyle: "solid",
-                      borderRadius: 50,
-                      width: 30,
-                      height: 30,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Link href="https://twitter.com/gdgantalya">
-                      <Img
-                        src="https://img.icons8.com/fluency-systems-filled/48/twitter.png"
-                        width="16"
-                        height="16"
-                        alt="Twitter"
-                      />
-                    </Link>
-                  </div>
-                </div>
-                <div style={{ paddingRight: 10 }}>
-                  <div
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "black",
-                      borderStyle: "solid",
-                      borderRadius: 50,
-                      width: 30,
-                      height: 30,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Link href="https://linkedin.com/company/gdg-antalya">
-                      <Img
-                        src="https://img.icons8.com/ios-filled/50/linkedin-2--v1.png"
-                        width="16"
-                        height="16"
-                        alt="LinkedIn"
-                      />
-                    </Link>
-                  </div>
-                </div>
-                <div style={{ paddingRight: 10 }}>
-                  <div
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "black",
-                      borderStyle: "solid",
-                      borderRadius: 50,
-                      width: 30,
-                      height: 30,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Link href="https://instagram.com/gdgantalya">
-                      <Img
-                        src="https://img.icons8.com/ios-filled/50/instagram-new.png"
-                        width="16"
-                        height="16"
-                        alt="Instagram"
-                      />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Section>
+              @gdgantalya
+            </Link>
+
             <Text
               style={{
                 ...paragraph,
@@ -328,7 +225,7 @@ const header = {
 };
 
 const logo = {
-  fontSize: "14px",
+  fontSize: "20px",
   fontWeight: "bold" as const,
   color: "#333",
   display: "block",
@@ -418,6 +315,16 @@ const socialText = {
   fontSize: "16px",
   color: "#525f7f",
   marginBottom: "15px",
+};
+
+// Footer tarzında Instagram link stili
+const footerSocialLink = {
+  color: "#81bdf4",
+  fontSize: "14px",
+  fontWeight: "bold" as const,
+  textDecoration: "underline",
+  display: "inline-block",
+  margin: "5px auto",
 };
 
 const socialIcons = {

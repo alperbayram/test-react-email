@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import { WomensDayEmail } from "./emails/wtm-email.js"; // Email template'inizin yolu
+import { WomensDayEmail } from "./emails/wtm-email.js";
 import React from "react";
 
 // __dirname ayarlaması (ESM için)
@@ -21,6 +21,7 @@ interface EmailRecipient {
   companyName?: string;
   subject?: string;
   attachmentUrl?: string;
+  cc?: string[]; // CC için dizi eklendi
 }
 
 interface EmailResult {
@@ -44,13 +45,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Static dosyaları sunmak için
 app.use(express.static(path.join(__dirname, "public")));
 app.use("*", express.static(path.join(__dirname, "index.html")));
+
 // Email gönderme fonksiyonu
 async function sendEmail(
   to: string,
   name: string,
   companyName: string,
   subject: string,
-  attachmentUrl?: string
+  attachmentUrl?: string,
+  cc?: string[] // CC parametresi eklendi
 ): Promise<any> {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -72,8 +75,10 @@ async function sendEmail(
   );
 
   const options = {
-    from: process.env.EMAIL_FROM || "alperbayrmm@gmail.com",
+    from: process.env.EMAIL_FROM || "gdgantalya@gmail.com",
     to: to,
+    // CC için null kontrolü ekledik
+    ...(cc && cc.length > 0 ? { cc: cc } : {}),
     subject: subject || "GDG Antalya IWD'25 Etkinlik Daveti",
     html: emailHtml,
   };
@@ -81,22 +86,21 @@ async function sendEmail(
   try {
     const info = await transporter.sendMail(options);
     console.log("E-posta başarıyla gönderildi:", info.messageId);
-    return info;
+    console.log("CC Emails:", cc || "Hiç CC yok"); // CC loglaması
+    return {
+      ...info,
+      ccCount: cc ? cc.length : 0,
+    };
   } catch (error) {
     console.error("E-posta gönderilirken hata oluştu:", error);
     throw error;
   }
 }
 
-// Ana endpoint - HTML sayfasını servis et
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Tekli e-posta gönderme endpoint'i
+// Endpoint kısmında da küçük bir düzenleme
 app.post("/send-email", async (req: any, res: any) => {
   try {
-    const { to, name, companyName, subject, attachmentUrl } = req.body;
+    const { to, name, companyName, subject, attachmentUrl, cc } = req.body;
 
     if (!to) {
       return res.status(400).json({
@@ -106,18 +110,31 @@ app.post("/send-email", async (req: any, res: any) => {
       });
     }
 
+    // CC için doğrulama ve işleme
+    let ccEmails: string[] | undefined;
+    if (cc && Array.isArray(cc)) {
+      // E-posta formatını doğrula
+      ccEmails = cc.filter((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    }
+
+    console.log("CC Emails before sending:", ccEmails); // Ek log
+
     const info = await sendEmail(
       to,
       name || "İlgili Yetkili",
       companyName || "Şirket Adı",
       subject || "GDG Antalya IWD'25 Etkinlik Daveti",
-      attachmentUrl
+      attachmentUrl,
+      ccEmails // CC listesi eklendi
     );
 
     res.status(200).json({
       status: "success",
       message: "E-posta başarıyla gönderildi",
-      data: { messageId: info.messageId },
+      data: {
+        messageId: info.messageId,
+        ccCount: info.ccCount || 0,
+      },
     });
   } catch (error: any) {
     console.error("E-posta gönderme hatası:", error);

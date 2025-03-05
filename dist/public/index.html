@@ -34,7 +34,8 @@
         margin-bottom: 5px;
         font-weight: 600;
       }
-      input {
+      input,
+      textarea {
         width: 100%;
         padding: 10px;
         border: 1px solid #ddd;
@@ -52,6 +53,7 @@
         font-size: 16px;
         width: 100%;
         display: block;
+        margin-top: 20px;
       }
       button:hover {
         background-color: #3367d6;
@@ -79,6 +81,10 @@
         background-color: #ffebee;
         color: #c62828;
         border: 1px solid #ffcdd2;
+      }
+      #ccEmails {
+        height: 100px;
+        resize: vertical;
       }
     </style>
   </head>
@@ -109,6 +115,16 @@
       </div>
 
       <div class="form-group">
+        <label for="ccEmails"
+          >CC E-posta Adresleri (her satıra bir e-posta)</label
+        >
+        <textarea
+          id="ccEmails"
+          placeholder="ornek1@sirket.com&#10;ornek2@sirket.com"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
         <label for="subject">Konu</label>
         <input
           type="text"
@@ -131,20 +147,27 @@
           const companyName = document.getElementById("companyName").value;
           const recipientEmail =
             document.getElementById("recipientEmail").value;
+          const ccEmailsText = document.getElementById("ccEmails").value;
           const subject = document.getElementById("subject").value;
 
           // Alan kontrolü
           if (!recipientName || !companyName || !recipientEmail || !subject) {
-            showStatus("Lütfen tüm alanları doldurun.", false);
+            showStatus("Lütfen tüm zorunlu alanları doldurun.", false);
             return;
           }
 
           // E-posta formatı kontrolü
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(recipientEmail)) {
-            showStatus("Lütfen geçerli bir e-posta adresi girin.", false);
+            showStatus("Lütfen geçerli bir alıcı e-posta adresi girin.", false);
             return;
           }
+
+          // CC e-posta adreslerini işleme
+          const ccEmails = ccEmailsText
+            .split("\n")
+            .map((email) => email.trim())
+            .filter((email) => emailRegex.test(email));
 
           // Yükleniyor durumu göster
           showStatus("E-posta gönderiliyor, lütfen bekleyin...", null);
@@ -161,6 +184,7 @@
                 name: recipientName,
                 companyName: companyName,
                 to: recipientEmail,
+                cc: ccEmails, // CC e-posta listesi
                 subject: subject,
               }),
             });
@@ -168,9 +192,13 @@
             const result = await response.json();
 
             if (response.ok) {
-              showStatus("E-posta başarıyla gönderildi!", true);
+              showStatus(
+                `E-posta başarıyla gönderildi! (CC: ${result.data.ccCount} kişi)`,
+                true
+              );
               // Form alanlarını temizle - isteğe bağlı
               document.getElementById("recipientEmail").value = "";
+              document.getElementById("ccEmails").value = "";
             } else {
               showStatus(
                 `Hata: ${result.error || "Bilinmeyen bir hata oluştu."}`,

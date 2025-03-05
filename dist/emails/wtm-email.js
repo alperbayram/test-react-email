@@ -17,55 +17,7 @@ export const WomensDayEmail = ({ name, companyName, attachmentUrl }) => (_jsxs(H
                                             fontWeight: "bold",
                                             textDecoration: "underline",
                                             padding: "8px 0",
-                                        }, href: attachmentUrl, children: "Ayr\u0131nt\u0131l\u0131 sponsorluk dosyam\u0131z\u0131 incelemek i\u00E7in t\u0131klay\u0131n\u0131z." }) })] }), _jsx(Hr, { style: hr }), _jsxs(Section, { style: socialSection, children: [_jsx(Text, { style: socialText, children: "Bizi takip edin" }), _jsx(Section, { style: {
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                    }, children: _jsxs("div", { style: {
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            gap: "10px",
-                                        }, children: [_jsx("div", { style: { paddingRight: 10 }, children: _jsx("div", { style: {
-                                                        borderWidth: 1,
-                                                        borderColor: "black",
-                                                        borderStyle: "solid",
-                                                        borderRadius: 50,
-                                                        width: 30,
-                                                        height: 30,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                    }, children: _jsx(Link, { href: "https://facebook.com/gdgantalya", children: _jsx(Img, { src: "https://img.icons8.com/ios-glyphs/60/facebook-f.png", width: "16", height: "16", alt: "Facebook" }) }) }) }), _jsx("div", { style: { paddingRight: 10 }, children: _jsx("div", { style: {
-                                                        borderWidth: 1,
-                                                        borderColor: "black",
-                                                        borderStyle: "solid",
-                                                        borderRadius: 50,
-                                                        width: 30,
-                                                        height: 30,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                    }, children: _jsx(Link, { href: "https://twitter.com/gdgantalya", children: _jsx(Img, { src: "https://img.icons8.com/fluency-systems-filled/48/twitter.png", width: "16", height: "16", alt: "Twitter" }) }) }) }), _jsx("div", { style: { paddingRight: 10 }, children: _jsx("div", { style: {
-                                                        borderWidth: 1,
-                                                        borderColor: "black",
-                                                        borderStyle: "solid",
-                                                        borderRadius: 50,
-                                                        width: 30,
-                                                        height: 30,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                    }, children: _jsx(Link, { href: "https://linkedin.com/company/gdg-antalya", children: _jsx(Img, { src: "https://img.icons8.com/ios-filled/50/linkedin-2--v1.png", width: "16", height: "16", alt: "LinkedIn" }) }) }) }), _jsx("div", { style: { paddingRight: 10 }, children: _jsx("div", { style: {
-                                                        borderWidth: 1,
-                                                        borderColor: "black",
-                                                        borderStyle: "solid",
-                                                        borderRadius: 50,
-                                                        width: 30,
-                                                        height: 30,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                    }, children: _jsx(Link, { href: "https://instagram.com/gdgantalya", children: _jsx(Img, { src: "https://img.icons8.com/ios-filled/50/instagram-new.png", width: "16", height: "16", alt: "Instagram" }) }) }) })] }) }), _jsx(Text, { style: {
+                                        }, href: attachmentUrl, children: "Ayr\u0131nt\u0131l\u0131 sponsorluk dosyam\u0131z\u0131 incelemek i\u00E7in t\u0131klay\u0131n\u0131z." }) })] }), _jsx(Hr, { style: hr }), _jsxs(Section, { style: socialSection, children: [_jsx(Text, { style: socialText, children: "Bizi takip edin" }), _jsx(Link, { style: footerSocialLink, href: "https://www.instagram.com/gdgantalya", children: "@gdgantalya" }), _jsx(Text, { style: {
                                         ...paragraph,
                                         textAlign: "center",
                                         fontSize: "12px",
@@ -97,7 +49,7 @@ const header = {
     position: "relative",
 };
 const logo = {
-    fontSize: "14px",
+    fontSize: "20px",
     fontWeight: "bold",
     color: "#333",
     display: "block",
@@ -175,6 +127,15 @@ const socialText = {
     fontSize: "16px",
     color: "#525f7f",
     marginBottom: "15px",
+};
+// Footer tarzında Instagram link stili
+const footerSocialLink = {
+    color: "#81bdf4",
+    fontSize: "14px",
+    fontWeight: "bold",
+    textDecoration: "underline",
+    display: "inline-block",
+    margin: "5px auto",
 };
 const socialIcons = {
     display: "flex",
