@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { WomensDayEmail } from "./emails/wtm-email.js";
 import React from "react";
+import WomensDayEmailSponsor from "./emails/wtm-sponsor.js";
 
 // __dirname ayarlaması (ESM için)
 const __filename = fileURLToPath(import.meta.url);
@@ -66,7 +67,7 @@ async function sendEmail(
   });
 
   const emailHtml = await render(
-    React.createElement(WomensDayEmail, {
+    React.createElement(WomensDayEmailSponsor, {
       name: name,
       companyName: companyName,
       attachmentUrl:

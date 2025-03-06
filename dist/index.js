@@ -7,8 +7,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import { WomensDayEmail } from "./emails/wtm-email.js";
 import React from "react";
+import WomensDayEmailSponsor from "./emails/wtm-sponsor.js";
 // __dirname ayarlaması (ESM için)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +35,7 @@ async function sendEmail(to, name, companyName, subject, attachmentUrl, cc // CC
             pass: process.env.SMTP_PASS,
         },
     });
-    const emailHtml = await render(React.createElement(WomensDayEmail, {
+    const emailHtml = await render(React.createElement(WomensDayEmailSponsor, {
         name: name,
         companyName: companyName,
         attachmentUrl: "https://drive.google.com/file/d/1_8PkSFFfhASj9pYbKYvIWbXlUQq8Rj7M/view?usp=sharing",
