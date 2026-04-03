@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import { WomensDayEmail } from "./emails/wtm-email.js";
 import React from "react";
 import WomensDayEmailSponsor from "./emails/wtm-sponsor.js";
+import { IWD26InviteEmail } from "./emails/iwd26-invite.js";
 
 // __dirname ayarlaması (ESM için)
 const __filename = fileURLToPath(import.meta.url);
@@ -35,8 +36,16 @@ interface EmailResult {
 // Çevre değişkenlerini yükle
 dotenv.config();
 
-const app = express();
+// Config
 const PORT = process.env.PORT || 3000;
+const SMTP_HOST = process.env.SMTP_HOST || "smtp.gmail.com";
+const SMTP_PORT = parseInt(process.env.SMTP_PORT || "587");
+const SMTP_SECURE = process.env.SMTP_SECURE === "true";
+const SMTP_USER = process.env.SMTP_USER!;
+const SMTP_PASS = process.env.SMTP_PASS!;
+const EMAIL_FROM = process.env.EMAIL_FROM || "gdgantalya@gmail.com";
+
+const app = express();
 
 // Middleware
 app.use(cors());
@@ -57,30 +66,27 @@ async function sendEmail(
   cc?: string[] // CC parametresi eklendi
 ): Promise<any> {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_SECURE === "true",
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: SMTP_SECURE,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: SMTP_USER,
+      pass: SMTP_PASS,
     },
   });
 
   const emailHtml = await render(
-    React.createElement(WomensDayEmailSponsor, {
+    React.createElement(IWD26InviteEmail, {
       name: name,
-      companyName: companyName,
-      attachmentUrl:
-        "https://drive.google.com/file/d/1_8PkSFFfhASj9pYbKYvIWbXlUQq8Rj7M/view?usp=sharing",
     })
   );
 
   const options = {
-    from: process.env.EMAIL_FROM || "gdgantalya@gmail.com",
+    from: EMAIL_FROM,
     to: to,
     // CC için null kontrolü ekledik
     ...(cc && cc.length > 0 ? { cc: cc } : {}),
-    subject: subject || "GDG Antalya IWD'25 Etkinlik Daveti",
+    subject: subject || "IWD'26 Antalya Etkinlik Daveti",
     html: emailHtml,
   };
 
@@ -124,7 +130,7 @@ app.post("/send-email", async (req: any, res: any) => {
       to,
       name || "İlgili Yetkili",
       companyName || "Şirket Adı",
-      subject || "GDG Antalya IWD'25 Etkinlik Daveti",
+      subject || "IWD'26 Antalya Etkinlik Daveti",
       attachmentUrl,
       ccEmails // CC listesi eklendi
     );

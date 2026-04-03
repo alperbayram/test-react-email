@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "email":"email dev",
+    "email": "email dev",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
@@ -27,6 +27,7 @@
     "react-email": "2.0.0"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "@types/nodemailer": "^6.4.17",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"
