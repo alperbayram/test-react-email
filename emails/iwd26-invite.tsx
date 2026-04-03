@@ -12,10 +12,6 @@ import {
   Text,
 } from "@react-email/components";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
 export const IWD26InviteEmail = ({ name }: { name?: string }) => (
   <Html>
     <Head>
@@ -83,7 +79,7 @@ export const IWD26InviteEmail = ({ name }: { name?: string }) => (
       <Container style={container} className="email-container">
         {/* Header Image */}
         <Img
-          src={`${baseUrl}/static/iwd26-header.png`}
+          src="https://github.com/alperbayram/test-react-email/blob/main/emails/static/iwd26-header.png?raw=true"
           alt="Women Techmakers - Break The Pattern - IWD 2026"
           width="700"
           height="233"
@@ -153,7 +149,7 @@ export const IWD26InviteEmail = ({ name }: { name?: string }) => (
 
           {/* Events Image */}
           <Img
-            src={`${baseUrl}/static/iwd26-events.jpg`}
+            src="https://github.com/alperbayram/test-react-email/blob/main/emails/static/iwd26-events.jpg?raw=true"
             alt="IWD 2026 Antalya Etkinlik Afisi"
             width="636"
             height="636"
@@ -181,7 +177,7 @@ export const IWD26InviteEmail = ({ name }: { name?: string }) => (
           {/* Footer */}
           <Section style={footer}>
             <Img
-              src={`${baseUrl}/static/gdg-antalya-logo.png`}
+              src="https://raw.githubusercontent.com/alperbayram/test-react-email/refs/heads/main/emails/static/gdg-antalya-logo.png"
               alt="Google Developer Group Antalya"
               width="300"
               height="80"

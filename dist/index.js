@@ -21,15 +21,18 @@ const SMTP_PORT = parseInt(process.env.SMTP_PORT || "587");
 const SMTP_SECURE = process.env.SMTP_SECURE === "true";
 const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASS;
-const EMAIL_FROM = process.env.EMAIL_FROM || "gdgantalya@gmail.com";
+const EMAIL_FROM = process.env.EMAIL_FROM || "GDG Antalya <gdgantalya@gmail.com>";
 const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// Static dosyaları sunmak için
-app.use(express.static(path.join(__dirname, "public")));
-app.use("*", express.static(path.join(__dirname, "index.html")));
+// Static dosyaları sunmak için (kaynak public klasörünü kullan)
+const publicDir = path.resolve(__dirname, "..", "public");
+app.use(express.static(publicDir));
+app.get("/", (_req, res) => {
+    res.sendFile(path.join(publicDir, "index.html"));
+});
 // Email gönderme fonksiyonu
 async function sendEmail(to, name, companyName, subject, attachmentUrl, cc // CC parametresi eklendi
 ) {
